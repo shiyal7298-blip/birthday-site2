@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Birthday Special</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  text-align: center;
+  background: black;
+  color: white;
+  overflow: hidden;
+}
+
+.page {
+  display: none;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.active {
+  display: flex;
+}
+
+button {
+  padding: 10px 25px;
+  font-size: 18px;
+  margin-top: 20px;
+  border-radius: 10px;
+  border: none;
+  background: red;
+  color: white;
+  cursor: pointer;
+}
+
+/* Page 1 */
+#p1 h1 {
+  animation: fade 2s infinite alternate;
+}
+@keyframes fade {
+  from {opacity: 0.3;}
+  to {opacity: 1;}
+}
+
+/* Cake */
+#cake {
+  font-size: 120px;
+  animation: bounce 1s infinite;
+}
+@keyframes bounce {
+  50% {transform: translateY(-30px);}
+}
+
+/* Confetti */
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: yellow;
+  top: -10px;
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  to { transform: translateY(100vh); }
+}
+
+/* Glow */
+#final {
+  font-size: 35px;
+  animation: glow 1s infinite alternate;
+}
+@keyframes glow {
+  from { text-shadow: 0 0 10px yellow; }
+  to { text-shadow: 0 0 25px white; }
+}
+
+/* Letter */
+.envelope {
+  width: 250px;
+  height: 180px;
+  background: #ff4d4d;
+  position: relative;
+  cursor: pointer;
+}
+.flap {
+  width: 0;
+  height: 0;
+  border-left: 125px solid transparent;
+  border-right: 125px solid transparent;
+  border-bottom: 90px solid #cc0000;
+  position: absolute;
+  top: -90px;
+  transition: 0.5s;
+}
+.letter {
+  width: 220px;
+  height: 140px;
+  background: white;
+  color: black;
+  position: absolute;
+  top: 20px;
+  left: 15px;
+  padding: 10px;
+  transform: translateY(100px);
+  transition: 0.5s;
+  text-align: left;
+}
+
+/* Photo */
+.photo {
+  width: 200px;
+  height: 200px;
+  border-radius: 20px;
+  margin-top: 20px;
+  animation: zoom 2s infinite alternate;
+}
+@keyframes zoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- Page 1 -->
+<div class="page active" id="p1">
+  <h1>🎉 Hey JIGU 🎉</h1>
+  <p>Someone has a surprise...</p>
+  <button onclick="nextPage(2)">Next 👉</button>
+</div>
+
+<!-- Page 2 -->
+<div class="page" id="p2">
+  <h1>🎂 Happy Birthday JIGU 🎂</h1>
+  <div id="cake">🎂</div>
+  <button onclick="nextPage(3)">Next 👉</button>
+</div>
+
+<!-- Page 3 -->
+<div class="page" id="p3">
+  <h1>🎆 Enjoy Your Day JIGU 🎆</h1>
+  <button onclick="nextPage(4)">Next 👉</button>
+</div>
+
+<!-- Page 4 -->
+<div class="page" id="p4">
+  <h1 id="final">❤️ You Are Special JIGU ❤️</h1>
+  <button onclick="nextPage(5)">Open Letter ✉️</button>
+</div>
+
+<!-- Page 5 (Letter) -->
+<div class="page" id="p5">
+  <div class="envelope" onclick="openLetter()">
+    <div class="flap"></div>
+    <div class="letter" id="letter">
+      <h3>Dear JIGU 💌</h3>
+      <p>Happy Birthday! 🎉  
+       YOU ARE VERY SPECIAL 😊</p>
+    </div>
+  </div>
+  <button onclick="nextPage(6)">Photo Surprise 📸</button>
+</div>
+
+<!-- Page 6 (Photo + Typing) -->
+<div class="page" id="p6">
+  <h1>🎁 Surprise 🎁</h1>
+  <img src="jigu.jpg" class="photo">
+  <p id="typing"></p>
+</div>
+
+<script>
+function nextPage(page) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById("p" + page).classList.add("active");
+
+  // Confetti
+  if (page === 3) {
+    for (let i = 0; i < 50; i++) {
+      let c = document.createElement("div");
+      c.classList.add("confetti");
+      c.style.left = Math.random() * 100 + "vw";
+      c.style.animationDuration = (Math.random()*3+2)+"s";
+      document.body.appendChild(c);
+    }
+  }
+
+  // Typing
+  if (page === 6) {
+    typeText("This memory is just for you ❤️", "typing");
+  }
+}
+
+// Letter open
+function openLetter() {
+  document.querySelector(".flap").style.transform = "rotateX(180deg)";
+  document.getElementById("letter").style.transform = "translateY(0)";
+}
+
+// Typing effect
+function typeText(text, id) {
+  let i = 0;
+  let speed = 50;
+  document.getElementById(id).innerHTML = "";
+
+  function typing() {
+    if (i < text.length) {
+      document.getElementById(id).innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typing, speed);
+    }
+  }
+  typing();
+}
+</script>
+
+</body>
+</html>
